@@ -2,27 +2,33 @@
     import { onMount } from 'svelte';
     import { inertia, Link } from '@inertiajs/svelte'
     import { page } from '@inertiajs/svelte'
-
-
+    let { children } = $props()
 </script>
 
 <svelte:head>
     <title>Inertia Svelte</title>
 </svelte:head>
 
-<div class="container mx-auto">
-    <header class="">
-        <nav class="bg-primary p-4 flex justify-center items-center">
+<main>
+    <div class="container mx-auto">
+        <header class="">
+            <nav class="bg-primary p-4 flex justify-center items-center">
             <div class="flex space-x-4 items-center">
-                <a href="/" class="text-white hover:text-gray-300">Home</a>
+                <a href="/" class="text-white hover:text-gray-300" use:inertia={{ prefetch: 'click' }}>Home</a>
                 {#if $page.props.auth.user}
-                    <a href="/logout" class="text-white hover:text-gray-300">Logout</a>
+                    <div class="flex space-x-4 items-center">
+                        <img src="http://localhost:9000/local/user_icons/{$page.props.auth.user.id}.png" alt="User Icon" class="w-10 h-10 rounded-full">
+                    </div>
+                    <button use:inertia={{ href: '/logout', method: 'delete' }} class="text-white hover:text-gray-300">Logout</button>
                 {:else}
-                    <a href="/login" class="text-white hover:text-gray-300">Login</a>
-                    <a href="/register" class="text-white hover:text-gray-300">Register</a>
+                    <a href="/login" class="text-white hover:text-gray-300" use:inertia={{ prefetch: 'click' }}>Login</a>
+                    <a href="/register" class="text-white hover:text-gray-300" use:inertia={{ prefetch: 'click' }}>Register</a>
                 {/if}
-            </div>
-        </nav>
-    </header>
-    <slot />
-</div>
+                </div>
+            </nav>
+        </header>
+        {@render children()}
+    </div>
+</main>
+
+

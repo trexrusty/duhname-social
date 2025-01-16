@@ -115,6 +115,16 @@ services:
                 - local
             retries: 3
             timeout: 5s
+    dicebear:
+        image: dicebear/api:2
+        restart: always
+        ports:
+        - '3000:3000'
+        tmpfs:
+        - '/run'
+        - '/tmp'
+        extra_hosts:
+        - "host.docker.internal:host-gateway"
 networks:
     sail:
         driver: bridge
