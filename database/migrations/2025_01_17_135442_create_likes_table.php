@@ -11,14 +11,16 @@ return new class extends Migration
      */
     public function up(): void
     {
-        Schema::create('posts', function (Blueprint $table) {
+        Schema::create('likes', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->text('content');
             $table->foreignUuid('user_id')->constrained('users');
-            $table->integer('likes_count')->default(0);
-            $table->boolean('is_draft')->default(false);
-            $table->boolean('is_private')->default(false);
+            $table->foreignUuid('post_id')->nullable()->constrained('posts');
+            $table->foreignUuid('comment_id')->nullable()->constrained('comments');
             $table->timestamps();
+
+
+            $table->unique(['post_id', 'user_id']);
+            $table->unique(['comment_id', 'user_id']);
         });
     }
 
@@ -27,6 +29,6 @@ return new class extends Migration
      */
     public function down(): void
     {
-        Schema::dropIfExists('posts');
+        Schema::dropIfExists('likes');
     }
 };

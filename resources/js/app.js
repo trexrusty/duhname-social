@@ -1,5 +1,5 @@
 import '../css/app.css'
-
+import './bootstrap.js'
 import { createInertiaApp } from '@inertiajs/svelte'
 import { mount } from 'svelte'
 
