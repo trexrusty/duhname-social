@@ -17,6 +17,11 @@ class LikeController extends Controller
     public function post_like(Post $post)
     {
         $user = Auth::user();
+
         $post->toggleLike($user);
+
+        $post->has_liked = $user ? $post->likes->contains('user_id', $user->id) : false;
+
+        return response()->json(['likes_count' => $post->likes_count, 'has_liked' => $post->has_liked]);
     }
 }

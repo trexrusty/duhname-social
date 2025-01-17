@@ -5,7 +5,7 @@ namespace App\Http\Controllers;
 use App\Http\Requests\StoreHubsRequest;
 use App\Http\Requests\UpdateHubsRequest;
 use App\Models\Hubs;
-
+use Inertia\Inertia;
 class HubsController extends Controller
 {
     /**
@@ -13,7 +13,7 @@ class HubsController extends Controller
      */
     public function index()
     {
-        //
+        return Inertia::render('Hub/Index');
     }
 
     /**

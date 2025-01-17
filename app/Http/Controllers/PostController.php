@@ -40,7 +40,9 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
-        //
+        return Inertia::render('Social/Show', [
+            'post' => $post,
+        ]);
     }
 
     /**

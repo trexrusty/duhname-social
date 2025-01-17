@@ -14,10 +14,11 @@
         <header class="">
             <nav class="bg-primary p-4 flex justify-center items-center">
             <div class="flex space-x-4 items-center">
-                <a href="/" class="text-white hover:text-gray-300" use:inertia={{ prefetch: 'click' }}>Home</a>
+                <a href="/" class="text-white hover:text-gray-300 " use:inertia={{ prefetch: 'click' }}>Home</a>
                 {#if $page.props.auth.user}
                     <div class="flex space-x-4 items-center">
                         <img src="http://localhost:9000/local/user_icons/{$page.props.auth.user.id}.png" alt="User Icon" class="w-10 h-10 rounded-full">
+                        <a href="/hub" class="text-white hover:text-gray-300" use:inertia={{ prefetch: 'click' }}>Hub</a>
                     </div>
                     <button use:inertia={{ href: '/logout', method: 'delete' }} class="text-white hover:text-gray-300">Logout</button>
                 {:else}

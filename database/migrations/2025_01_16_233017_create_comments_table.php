@@ -16,6 +16,7 @@ return new class extends Migration
             $table->text('content');
             $table->foreignUuid('user_id')->constrained('users');
             $table->foreignUuid('post_id')->constrained('posts');
+            $table->foreignUuid('parent_id')->nullable()->constrained('comments');
             $table->integer('likes_count')->default(0);
             $table->timestamps();
         });
