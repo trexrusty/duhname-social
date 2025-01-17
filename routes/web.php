@@ -5,7 +5,7 @@ use Inertia\Inertia;
 use App\Http\Controllers\Auth\RegisterController;
 use App\Http\Controllers\Auth\SessionController;
 use App\Http\Controllers\IndexController;
-
+use App\Http\Controllers\PostController;
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -16,6 +16,8 @@ Route::group(['middleware' => 'guest'], function () {
 
 Route::group(['middleware' => 'auth'], function () {
     Route::delete('/logout', [SessionController::class, 'destroy'])->name('logout');
+
+    Route::post('/post', [PostController::class, 'store'])->name('post.store');
 });
 
 
