@@ -1,6 +1,7 @@
 <script>
-    export let color = 'red'
-    $: color = `${color}`
+    let { color } = $props()
+
+
 </script>
 
 

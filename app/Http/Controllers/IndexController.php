@@ -17,12 +17,15 @@ class IndexController extends Controller
             if ($user) {
                 $query->where('user_id', $user->id);
             }
-        }])
+        }, 'comments'])
             ->published()
             ->latest()
             ->paginate($per_page);
+
+
         $posts->getCollection()->transform(function ($post) use ($user) {
                 $post->has_liked = $user ? $post->likes->contains('user_id', $user->id) : false;
+                $post->comments_count = $post->comments->count();
                 return $post;
             });
 

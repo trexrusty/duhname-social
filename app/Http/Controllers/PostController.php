@@ -40,8 +40,12 @@ class PostController extends Controller
      */
     public function show(Post $post)
     {
+        $post = Post::with([
+            'user:id,tag,username',
+            'comments.user:id,username,tag'
+        ])->find($post->id);
         return Inertia::render('Social/Show', [
-            'post' => $post,
+            'social_post' => $post,
         ]);
     }
 

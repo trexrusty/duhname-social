@@ -1,13 +1,10 @@
 <script>
-    import { useForm } from '@inertiajs/svelte'
     import { page } from '@inertiajs/svelte'
-    import { router } from '@inertiajs/svelte'
     import axios from 'axios'
     import Heart from './Icon/Heart.svelte'
-
+    import { likeAuth } from '../../libs/stores/LikeAuth'
     let { post } = $props()
 
-    let color = 'white'
 
     function likePost(event) {
         event.preventDefault();
@@ -18,7 +15,12 @@
         }).then(response => {
             post = { ...post, likes_count: response.data.likes_count, has_liked: response.data.has_liked };
         }).catch(error => {
-            console.error('Error liking post', error);
+            if (error.response.status === 401) {
+                likeAuth.set(true)
+                setTimeout(() => {
+                    likeAuth.set(false); // Reset the store to false after 5 seconds
+                }, 5000);
+            }
         });
     }
 
@@ -42,16 +44,22 @@
             </div>
         </div>
     </div>
-    <p class="text-sm text-white mt-2">{post.content}</p>
+    <div class="text-base text-white mt-2 break-words whitespace-normal">{post.content}</div>
     <div class="flex items-center justify-between mt-6">
         <a href={`/social/${post.id}`} use:inertia={{ prefetch: 'click' }} class="text-white justify-start hover:text-blue-500">
-            <p class="text-sm text-white text-center">0</p>
+            <p class="text-sm text-white text-center">{post.comments_count ?? 0}</p>
         </a>
         <div class="flex items-center justify-end">
             {#if post.has_liked}
-                <button class="pl-1 mt-2 text-white rounded  mb-2" onclick={likePost}><Heart color="red" /> {post.likes_count ?? 0}</button>
+                <button class="pl-1 mt-2 text-white rounded mb-2" onclick={likePost}>
+                    <Heart color="red" />
+                    <span>{post.likes_count ?? 0}</span>
+                </button>
             {:else}
-                <button class="pl-1 mt-2  text-white rounded  mb-2" onclick={likePost}><Heart color="white" /> {post.likes_count ?? 0}</button>
+                <button class="pl-1 mt-2 text-white rounded mb-2" onclick={likePost}>
+                    <Heart color="white" />
+                    <span>{post.likes_count ?? 0}</span>
+                </button>
             {/if}
         </div>
     </div>
