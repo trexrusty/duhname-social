@@ -5,6 +5,10 @@
     import { WhenVisible } from '@inertiajs/svelte'
     import Post from '../Shared/Post.svelte'
     import { likeAuth } from '../../libs/stores/LikeAuth'
+    import { usePoll } from '@inertiajs/svelte'
+
+    let startpolling = $state(false)
+
     let { posts } = $props()
 
     let like_auth = $state(false);
@@ -27,6 +31,14 @@
         });
     }
 
+    $effect(() => {
+        if (startpolling) {
+            usePoll(5000)
+        }
+    })
+
+
+
 </script>
 
 <Layout>
@@ -46,7 +58,10 @@
     <pre class="text-white">
         Number of posts: {posts?.data?.length ?? 0}
     </pre>
-
+    <div class="flex flex-col items-center justify-center mb-4">
+        <label for="load-more" class="text-white">Live updates</label>
+        <input type="checkbox" id="load-more" class="text-white" bind:checked={startpolling}/>
+    </div>
     {#if posts.data}
         {#each posts.data as post}
             <Post post={post} />
