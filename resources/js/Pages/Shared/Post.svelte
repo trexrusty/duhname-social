@@ -1,4 +1,5 @@
 <script>
+    import { inertia } from '@inertiajs/svelte'
     import { page } from '@inertiajs/svelte'
     import axios from 'axios'
     import { likeAuth } from '../../libs/stores/LikeAuth'
