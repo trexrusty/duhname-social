@@ -13,6 +13,10 @@
 
     console.log(PaginationPosts)
 
+    let lastPostId = posts.length > 0 ? posts[posts.length - 1].id : null; // Get the last post ID
+
+    console.log(lastPostId)
+
     let like_auth = $state(false);
     likeAuth.subscribe(value => {
            like_auth = value;
@@ -39,6 +43,23 @@
         }
     }
 
+    function testing() {
+        console.log('testing')
+        axios.get('/post', {
+            params: {
+                end_id: lastPostId,
+            },
+        })
+        .then(response => {
+            console.log(response.data)
+            posts = [...posts, ...response.data.data]
+            lastPostId = response.data.last_post_id;
+            console.log(lastPostId)
+        })
+        .catch(error => {
+            console.error(error)
+        })
+    }
 
     function submit(e) {
         e.preventDefault();
@@ -98,7 +119,7 @@
         <h1 class="text-white text-center text-2xl mt-4">If you see this, the posts are not loading</h1>
     {:else}
         <div class="flex items-center justify-center">
-            <button class="text-white text-center text-2xl mt-4 bg-secondary p-2 rounded-md hover:bg-tertiary mb-2" onclick={loadMorePosts}>Load more posts</button>
+            <button class="text-white text-center text-2xl mt-4 bg-secondary p-2 rounded-md hover:bg-tertiary mb-2" onclick={testing}>Load more posts</button>
         </div>
     {/if}
 

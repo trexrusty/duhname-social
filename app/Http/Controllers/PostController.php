@@ -10,20 +10,34 @@ use Illuminate\Support\Facades\Auth;
 
 class PostController extends Controller
 {
-    /**
-     * Display a listing of the resource.
-     */
-    public function index()
-    {
-        //
-    }
 
-    /**
-     * Show the form for creating a new resource.
-     */
-    public function create()
+    public function get_posts()
     {
-        //
+        $user = Auth::user();
+        $endId = request()->input('end_id');
+        $per_page = 10; // Get 10 posts
+
+        $posts = Post::with(['user:id,tag,username'])
+            ->withCount('comments')
+            ->published()
+            ->where('id', '<', $endId) // Get posts before the given endId
+            ->latest()
+            ->limit($per_page)
+            ->get(); // Fetch the posts directly
+
+        $posts->transform(function ($post) use ($user) {
+            $post->has_liked = $user ? $post->likes->contains('user_id', $user->id) : false;
+            return $post;
+        });
+
+        $lastPostId = $posts->isNotEmpty() ? $posts->last()->id : null;
+
+        return response()->json([
+            'success' => true,
+            'data' => $posts,
+            'last_post_id' => $lastPostId,
+            'message' => 'Posts retrieved successfully.',
+        ]);
     }
 
     /**

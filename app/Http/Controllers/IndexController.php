@@ -14,11 +14,7 @@ class IndexController extends Controller
         $page = request()->input('page', 1);
         $user = Auth::user();
 
-        $posts = Post::with(['user:id,tag,username', 'likes' => function($query) use ($user) {
-            if ($user) {
-                $query->where('user_id', $user->id);
-            }
-        }, 'comments'])
+        $posts = Post::with(['user:id,tag,username'])
             ->published()
             ->latest()
             ->paginate($per_page);
@@ -30,9 +26,12 @@ class IndexController extends Controller
                 return $post;
             });
 
+        $lastPostId = $posts->isNotEmpty() ? $posts->last()->id : null;
+
         return Inertia::render('Home/Index', [
             'posts' => inertia()->merge(fn () => $posts->items()),
             'PaginationPosts' => $posts->toArray(),
+            'last_post_id' => $lastPostId,
         ]);
     }
 

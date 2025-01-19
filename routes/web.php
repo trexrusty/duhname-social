@@ -33,3 +33,5 @@ Route::get('/', [IndexController::class, 'index'])->name('home');
 Route::get('/social/{post}', [PostController::class, 'show'])->name('social.show');
 
 Route::get('/load-more', [IndexController::class, 'loadMore'])->name('load.more');
+
+Route::get('/post', [PostController::class, 'get_posts'])->name('post.get');
