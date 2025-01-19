@@ -1,4 +1,5 @@
 <script>
+    import axios from 'axios'
     import Layout from '../Shared/Layout.svelte'
     import { useForm } from '@inertiajs/svelte'
     import { page } from '@inertiajs/svelte'
@@ -6,13 +7,13 @@
     import Post from '../Shared/Post.svelte'
     import { likeAuth } from '../../libs/stores/LikeAuth'
     import { usePoll } from '@inertiajs/svelte'
-
+    import { router } from '@inertiajs/svelte'
     let startpolling = $state(false)
+    let { posts, PaginationPosts } = $props()
 
-    let { posts } = $props()
+    console.log(PaginationPosts)
 
     let like_auth = $state(false);
-
     likeAuth.subscribe(value => {
            like_auth = value;
        });
@@ -21,6 +22,23 @@
         _token: $page.props.csrf_token,
         content: '',
     })
+
+    function loadMorePosts() {
+        console.log('loadMorePosts')
+        if (PaginationPosts.current_page < PaginationPosts.last_page) {
+            router.reload({
+                data: {
+                    page: PaginationPosts.current_page + 1,
+                },
+                only: ['posts', 'PaginationPosts'],
+                preserveUrl: true
+            })
+        }
+        else {
+            console.log('No more posts to load')
+        }
+    }
+
 
     function submit(e) {
         e.preventDefault();
@@ -37,10 +55,11 @@
         }
     })
 
-
+    window.addEventListener('load', () => {
+    window.scrollTo(0, 0);
+    });
 
 </script>
-
 <Layout>
     <div class="flex items-center justify-center">
         {#if $page.props.auth.user}
@@ -58,20 +77,29 @@
         {/if}
     </div>
 
+
     <!-- Debug info -->
     <pre class="text-white">
-        Number of posts: {posts?.data?.length ?? 0}
+        Number of posts: {posts?.length ?? 0}
     </pre>
     <div class="flex flex-col items-center justify-center mb-4">
         <label for="load-more" class="text-white">Live updates</label>
         <input type="checkbox" id="load-more" class="text-white" bind:checked={startpolling}/>
     </div>
-    {#if posts.data}
-        {#each posts.data as post}
+    {#if posts}
+        {#each posts as post}
             <Post post={post} />
         {/each}
     {:else}
         <p class="text-white text-center">No posts available</p>
+    {/if}
+
+    {#if PaginationPosts.current_page == PaginationPosts.last_page}
+        <h1 class="text-white text-center text-2xl mt-4">If you see this, the posts are not loading</h1>
+    {:else}
+        <div class="flex items-center justify-center">
+            <button class="text-white text-center text-2xl mt-4 bg-secondary p-2 rounded-md hover:bg-tertiary mb-2" onclick={loadMorePosts}>Load more posts</button>
+        </div>
     {/if}
 
 </Layout>

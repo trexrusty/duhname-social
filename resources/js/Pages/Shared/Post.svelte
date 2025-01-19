@@ -6,6 +6,8 @@
     import Like from './Form/Like.svelte'
     let { post } = $props()
 
+    let likes_count = $state(post.likes_count)
+    let has_liked = $state(post.has_liked)
 
     function likePost(event) {
         event.preventDefault();
@@ -14,7 +16,8 @@
             post_id: post.id,
             preserveScroll: true,
         }).then(response => {
-            post = { ...post, likes_count: response.data.likes_count, has_liked: response.data.has_liked };
+            likes_count = response.data.likes_count
+            has_liked = response.data.has_liked
         }).catch(error => {
             if (error.response.status === 401) {
                 likeAuth.set(true)
@@ -27,7 +30,7 @@
 
     function getPostLikes() {
         axios.get('/like/' + post.id).then(response => {
-            post = { ...post, likes_count: response.data.likes_count, has_liked: response.data.has_liked };
+            likes_count = response.data.likes_count
         }).catch(error => {
             console.error('Error getting post likes', error);
         });
@@ -41,7 +44,7 @@
             <img src="http://localhost:9000/local/user_icons/{post.user.id}.png" alt="User Icon" class="w-10 h-10 rounded-full">
             <div class="flex flex-col justify-start">
                 <h1 class="text-sm text-white">{post.user?.username ?? 'Unknown User'}</h1>
-                <a class="text-xs text-white hover:text-gray-400 hover:underline">duh:{post.user?.tag ?? 'Unknown User'}</a>
+                <a use:inertia href={`/profile/${post.user?.tag}`} class="text-xs text-white hover:text-gray-400 hover:underline">duh:{post.user?.tag ?? 'Unknown User'}</a>
             </div>
         </div>
     </div>
@@ -53,7 +56,7 @@
             <p class="text-sm text-white text-center">{post.comments_count ?? 0}</p>
         </a>
         <div class="flex items-center justify-end pr-4">
-            <Like has_liked={post.has_liked} likes_count={post.likes_count} post_id={post.id} />
+            <Like has_liked={has_liked} likes_count={likes_count} post_id={post.id} />
         </div>
     </div>
 </div>

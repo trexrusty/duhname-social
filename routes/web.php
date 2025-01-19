@@ -31,3 +31,5 @@ Route::group(['middleware' => 'auth'], function () {
 Route::get('/', [IndexController::class, 'index'])->name('home');
 
 Route::get('/social/{post}', [PostController::class, 'show'])->name('social.show');
+
+Route::get('/load-more', [IndexController::class, 'loadMore'])->name('load.more');

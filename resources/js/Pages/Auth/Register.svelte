@@ -28,14 +28,14 @@
         {#if $form.errors.username}
             <p class="text-red-500">{$form.errors.username}</p>
         {/if}
-        <input type="text" id="username" name="username" bind:value={$form.username} />
-        <input type="text" id="tag" name="tag" bind:value={$form.tag} />
-        <input type="email" id="email" name="email" bind:value={$form.email} />
-        <input type="password" id="password" name="password" bind:value={$form.password} />
-        <input type="password" id="password_confirmation" name="password_confirmation" bind:value={$form.password_confirmation} />
+        <input class="border border-gray-500 rounded-md p-2 bg-secondary text-white focus:outline-none hover:outline-none" type="text" id="username" name="username" bind:value={$form.username} />
+        <input class="border border-gray-500 rounded-md p-2 bg-secondary text-white focus:outline-none hover:outline-none" type="text" id="tag" name="tag" bind:value={$form.tag} />
+        <input class="border border-gray-500 rounded-md p-2 bg-secondary text-white focus:outline-none hover:outline-none" type="email" id="email" name="email" bind:value={$form.email} />
+        <input class="border border-gray-500 rounded-md p-2 bg-secondary text-white focus:outline-none hover:outline-none" type="password" id="password" name="password" bind:value={$form.password} />
+        <input class="border border-gray-500 rounded-md p-2 bg-secondary text-white focus:outline-none hover:outline-none" type="password" id="password_confirmation" name="password_confirmation" bind:value={$form.password_confirmation} />
         <button type="submit">Register</button>
     </form>
-    <pre class="mt-4 p-4 bg-gray-100 rounded text-black">
+    <pre class="mt-4 p-4 bg-black rounded text-white">
         {JSON.stringify($form, null, 2)}
     </pre>
 </Layout>
