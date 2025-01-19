@@ -38,7 +38,7 @@
 
 </script>
 
-<div class="border border-gray-500 container mx-auto max-w-xl bg-secondary shadow-md text-white">
+<div class="border-r border-l border-b border-gray-500 container mx-auto max-w-xl bg-secondary shadow-md text-white">
     <div class="flex items-center justify-between px-4 pt-2">
         <div class="flex items-center justify-start">
             <img src="http://localhost:9000/local/user_icons/{post.user.id}.png" alt="User Icon" class="w-10 h-10 rounded-full">
@@ -48,7 +48,6 @@
             </div>
         </div>
     </div>
-    <div class="border-t border-gray-500 my-4"></div>
     <div class="text-base text-white break-words whitespace-normal px-4 pb-2 mb-2">{post.content}</div>
     <div class="border-b border-gray-500"></div>
     <div class="flex items-center justify-between px-4">

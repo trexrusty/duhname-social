@@ -61,30 +61,30 @@
 
 </script>
 <Layout>
-    <div class="flex items-center justify-center">
-        {#if $page.props.auth.user}
-            <form onsubmit={submit} id="post-form">
-                <div class="flex flex-col items-center justify-center border border-gray-500 rounded-md shadow-md bg-secondary p-2">
-                    <textarea name="content" rows="5"  class="block w-96 text-white bg-secondary resize-none outline-none no-scrollbar" bind:value={$PostForm.content}></textarea>
-                </div>
-                <div class="flex items-center justify-center mt-2">
-                    <span class="text-white mr-2">{255 - $PostForm.content.length}</span>
-                    <button type="submit" class="px-4 py-2 mt-2 bg-secondary text-white rounded hover:bg-tertiary mb-2">Post</button>
-                </div>
-            </form>
-        {:else}
-            <p class="{like_auth ? 'text-red-500' : 'text-white'}">Please login to post or like</p>
-        {/if}
-    </div>
 
-
-    <!-- Debug info -->
-    <pre class="text-white">
-        Number of posts: {posts?.length ?? 0}
-    </pre>
     <div class="flex flex-col items-center justify-center mb-4">
         <label for="load-more" class="text-white">Live updates</label>
         <input type="checkbox" id="load-more" class="text-white" bind:checked={startpolling}/>
+    </div>
+    <div class="items-center justify-center container max-w-xl mx-auto ">
+        {#if $page.props.auth.user}
+            <form onsubmit={submit} id="post-form">
+                <div class="flex flex-col items-center justify-center border border-gray-500 shadow-md bg-secondary max-w-xl">
+                    <textarea name="content" rows="5" class="block w-full text-white bg-secondary resize-none outline-none no-scrollbar p-2 mb-2" bind:value={$PostForm.content}></textarea>
+                    <hr class="flex items-center border-t border-gray-500 w-full">
+                    <div class="flex items-center justify-center mt-2">
+                        <span class="text-white mr-2">{255 - $PostForm.content.length}</span>
+                        <button type="submit" class="px-4 py-2 mt-2 bg-secondary text-white rounded hover:bg-tertiary mb-2">Post</button>
+                    </div>
+                </div>
+            </form>
+        {:else}
+        <div class="items-center justify-center container max-w-xl mx-auto ">
+            <div class="flex flex-col items-center justify-center border border-gray-500 shadow-md bg-secondary max-w-xl">
+                <p class="{like_auth ? 'text-red-500' : 'text-white'}">Please login to post or like</p>
+            </div>
+        </div>
+        {/if}
     </div>
     {#if posts}
         {#each posts as post}
