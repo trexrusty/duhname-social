@@ -44,10 +44,14 @@
 <Layout>
     <div class="flex items-center justify-center">
         {#if $page.props.auth.user}
-            <form onsubmit={submit} class="flex flex-col items-center justify-center" id="post-form">
-                <input type="text" name="content" class="mt-1 block w-full border-gray-500 rounded-md shadow-sm text-white bg-secondary hover:bg-tertiary" bind:value={$PostForm.content} />
-                <span class="text-white">{255 - $PostForm.content.length}</span>
-                <button type="submit" class="px-4 py-2 mt-2 bg-secondary text-white rounded hover:bg-tertiary mb-2">Post</button>
+            <form onsubmit={submit} id="post-form">
+                <div class="flex flex-col items-center justify-center border border-gray-500 rounded-md shadow-md bg-secondary p-2">
+                    <textarea name="content" rows="5"  class="block w-96 text-white bg-secondary resize-none outline-none no-scrollbar" bind:value={$PostForm.content}></textarea>
+                </div>
+                <div class="flex items-center justify-center mt-2">
+                    <span class="text-white mr-2">{255 - $PostForm.content.length}</span>
+                    <button type="submit" class="px-4 py-2 mt-2 bg-secondary text-white rounded hover:bg-tertiary mb-2">Post</button>
+                </div>
             </form>
         {:else}
             <p class="{like_auth ? 'text-red-500' : 'text-white'}">Please login to post or like</p>

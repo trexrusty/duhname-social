@@ -5,7 +5,6 @@
     import { page } from '@inertiajs/svelte'
     let { has_liked, likes_count, post_id } = $props()
 
-
     function likePost(event) {
         event.preventDefault();
         axios.post('/like/' + post_id, {
@@ -25,8 +24,6 @@
         });
     }
 </script>
-
-
 
 <button class="flex items-center pl-1 mt-2 text-white rounded mb-2" onclick={likePost}>
     <Heart color={has_liked ? 'red' : 'white'} />

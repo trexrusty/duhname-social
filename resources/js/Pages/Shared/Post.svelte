@@ -1,7 +1,6 @@
 <script>
     import { page } from '@inertiajs/svelte'
     import axios from 'axios'
-    import Heart from './Icon/Heart.svelte'
     import { likeAuth } from '../../libs/stores/LikeAuth'
     import Like from './Form/Like.svelte'
     let { post } = $props()
@@ -35,13 +34,13 @@
 
 </script>
 
-<div class="border border-gray-500 container mx-auto mb-5 max-w-md bg-slate-00 rounded-lg shadow-md text-white">
+<div class="border border-gray-500 container mx-auto max-w-xl bg-secondary shadow-md text-white">
     <div class="flex items-center justify-between px-4 pt-2">
         <div class="flex items-center justify-start">
             <img src="http://localhost:9000/local/user_icons/{post.user.id}.png" alt="User Icon" class="w-10 h-10 rounded-full">
             <div class="flex flex-col justify-start">
                 <h1 class="text-sm text-white">{post.user?.username ?? 'Unknown User'}</h1>
-                <p class="text-xs text-white">{post.user?.tag ?? 'Unknown User'}</p>
+                <a class="text-xs text-white hover:text-gray-400 hover:underline">duh:{post.user?.tag ?? 'Unknown User'}</a>
             </div>
         </div>
     </div>
