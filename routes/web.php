@@ -8,6 +8,10 @@ use App\Http\Controllers\IndexController;
 use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\HubsController;
+use App\Http\Controllers\CommentController;
+
+Route::get('/social/{post}', [PostController::class, 'show'])->name('social.show');
+
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -21,16 +25,17 @@ Route::group(['middleware' => 'auth'], function () {
 
     Route::post('/post', [PostController::class, 'store'])->name('post.store');
 
-    Route::post('/like/{post}', [LikeController::class, 'post_like'])->name('like.post');
-    Route::get('/like/{post}', [LikeController::class, 'get_post_likes'])->name('like.post.get');
+    Route::post('/post/like/{post}', [LikeController::class, 'post_like'])->name('like.post');
+
+    Route::post('/comment/like/{comment}', [LikeController::class, 'like_comment'])->name('like.comment');
+
+    Route::post('/social/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
 
     Route::get('/hub', [HubsController::class, 'index'])->name('hub.index');
 });
 
 
 Route::get('/', [IndexController::class, 'index'])->name('home');
-
-Route::get('/social/{post}', [PostController::class, 'show'])->name('social.show');
 
 Route::get('/load-more', [IndexController::class, 'loadMore'])->name('load.more');
 

@@ -1,15 +1,14 @@
 <script>
-    import Heart from '../Icon/Heart.svelte'
-    import { likeAuth } from '../../../libs/stores/LikeAuth'
+    import Heart from '../../Icon/Heart.svelte'
+    import { likeAuth } from '../../../../libs/stores/LikeAuth'
     import axios from 'axios'
     import { page } from '@inertiajs/svelte'
-    let { has_liked, likes_count, post_id } = $props()
+    let { has_liked, likes_count, comment_id } = $props()
 
-    function likePost(event) {
-        event.preventDefault();
-        axios.post('/post/like/' + post_id, {
+    function likeComment() {
+        axios.post('/comment/like/' + comment_id, {
             _token: $page.props.csrf_token,
-            post_id: post_id,
+            comment_id: comment_id,
             preserveScroll: true,
         }).then(response => {
             has_liked = response.data.has_liked;
@@ -27,7 +26,7 @@
 
 
 
-<button class="flex items-center pl-1 mt-2 text-white rounded mb-2" onclick={likePost} >
+<button class="flex items-center pl-1 mt-2 text-white rounded mb-2" onclick={likeComment} >
     <Heart color={has_liked ? 'red' : 'white'} />
     <span class="ml-1">{likes_count}</span>
 </button>

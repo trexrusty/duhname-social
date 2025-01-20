@@ -15,22 +15,22 @@ class IndexController extends Controller
         $user = Auth::user();
 
         $posts = Post::with(['user:id,tag,username'])
+            ->withCount('comments')
             ->published()
             ->latest()
-            ->paginate($per_page);
+            ->limit($per_page)
+            ->get();
 
 
-        $posts->getCollection()->transform(function ($post) use ($user) {
+        $posts->transform(function ($post) use ($user) {
                 $post->has_liked = $user ? $post->likes->contains('user_id', $user->id) : false;
-                $post->comments_count = $post->comments->count();
                 return $post;
             });
 
         $lastPostId = $posts->isNotEmpty() ? $posts->last()->id : null;
 
         return Inertia::render('Home/Index', [
-            'posts' => inertia()->merge(fn () => $posts->items()),
-            'PaginationPosts' => $posts->toArray(),
+            'posts' => $posts,
             'last_post_id' => $lastPostId,
         ]);
     }
