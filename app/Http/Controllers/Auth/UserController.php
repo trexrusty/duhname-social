@@ -25,11 +25,25 @@ class UserController extends Controller
 
     public function getUser(User $user)
     {
-        $user = User::with(['posts:id,user_id,content', 'comments:id,post_id,user_id,content', 'likes:id,user_id,comment_id'])
-            ->find($user->id)
-            ->setRelation('posts', $user->posts->take(10))
-            ->setRelation('comments', $user->comments->take(10))
-            ->setRelation('likes', $user->likes->take(10));
+        $user = User::select('id', 'tag', 'username')
+        ->with([
+            'posts' => function($query) {
+                $query->select('id', 'user_id', 'content')
+                      ->latest()
+                      ->take(10);
+            },
+            'comments' => function($query) {
+                $query->select('id', 'post_id', 'user_id', 'content')
+                      ->latest()
+                      ->take(10);
+            },
+            'likes' => function($query) {
+                $query->select('id', 'user_id', 'comment_id')
+                      ->latest()
+                      ->take(10);
+            }
+        ])
+        ->find($user->id);
 
         $data = [
             'user' => $user,
