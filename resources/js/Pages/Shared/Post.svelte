@@ -29,7 +29,7 @@
     <div class="flex items-center justify-between px-4">
         <a
         href={`/social/${post.id}`}
-        use:inertia={{ prefetch: 'hover', preserveState: true, preserveScroll: true }}
+        use:inertia={{ prefetch: 'hover', preserveScroll: true }}
         class="text-white justify-start hover:text-blue-500"
         >
         <p class="text-sm text-white text-center">{post.comments_count ?? 0}</p>

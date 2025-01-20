@@ -64,4 +64,22 @@ class CommentController extends Controller
     {
         //
     }
+
+    public function getComments(Post $post)
+    {
+        $user = Auth::user();
+
+        $comments = $post->comments()
+            ->with(['user:id,username,tag'])
+            ->withCount('likes')
+            ->latest()
+            ->get()
+            ->transform(function ($comment) use ($user) {
+                $comment->has_liked = $user ? $comment->likes->contains('user_id', $user->id) : false;
+                $comment->likes_count = $comment->likes()->count();
+                return $comment;
+            });
+
+        return response()->json($comments);
+    }
 }

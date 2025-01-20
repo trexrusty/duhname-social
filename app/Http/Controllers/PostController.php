@@ -61,15 +61,10 @@ class PostController extends Controller
 
         $post = Post::with([
             'user:id,tag,username',
-            'comments.user:id,username,tag',
-            'comments.likes'
         ])->find($post->id);
 
         $post->has_liked = $user ? $post->likes->contains('user_id', $user->id) : false;
 
-        $post->comments->each(function ($comment) use ($user) {
-            $comment->has_liked = $user ? $comment->likes->contains('user_id', $user->id) : false;
-        });
         return Inertia::render('Social/Show', [
             'social_post' => $post,
         ]);

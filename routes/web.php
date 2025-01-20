@@ -12,6 +12,7 @@ use App\Http\Controllers\CommentController;
 
 Route::get('/social/{post}', [PostController::class, 'show'])->name('social.show');
 
+Route::get('/social/{post}/comments', [CommentController::class, 'getComments'])->name('social.comments');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');

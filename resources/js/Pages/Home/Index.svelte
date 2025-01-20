@@ -36,7 +36,7 @@
         content: '',
     })
 
-    function testing() {
+    function loadMorePosts() {
         axios.get('/post', {
             params: {
                 end_id: lastPostId,
@@ -109,7 +109,7 @@
 
     {#if lastPostId}
         <div class="flex items-center justify-center">
-            <button class="text-white text-center text-2xl mt-4 bg-secondary p-2 rounded-md hover:bg-tertiary mb-2" onclick={testing}>Load more posts</button>
+            <button class="text-white text-center text-2xl mt-4 bg-secondary p-2 rounded-md hover:bg-tertiary mb-2" onclick={loadMorePosts}>Load more posts</button>
         </div>
     {:else if lastPostId == null}
         <p class="text-white text-center">No more posts to load</p>

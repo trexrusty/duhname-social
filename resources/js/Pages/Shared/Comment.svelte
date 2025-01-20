@@ -15,7 +15,7 @@
 
 </script>
 
-<div class="border-r border-l border-b border-gray-500 container mx-auto max-w-xl bg-secondary shadow-md text-white">
+<div class="border border-gray-500 container mx-auto max-w-xl bg-secondary shadow-md text-white">
     <div class="flex items-center justify-between px-4 pt-2">
         <div class="flex items-center justify-start">
             <img src="http://localhost:9000/local/user_icons/{comment.user.id}.png" alt="User Icon" class="w-10 h-10 rounded-full">

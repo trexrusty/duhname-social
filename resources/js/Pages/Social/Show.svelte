@@ -6,12 +6,23 @@
     import { likeAuth } from '../../libs/stores/LikeAuth'
     import { useForm } from '@inertiajs/svelte'
     import Comment from '../Shared/Comment.svelte';
+    import { onMount } from 'svelte';
     let { social_post } = $props();
 
     let like_auth = $state(false);
     likeAuth.subscribe(value => {
            like_auth = value;
        });
+
+    let comments = $state([]);
+
+    onMount(() => {
+        axios.get(`/social/${social_post.id}/comments`).then(response => {
+            comments = response.data;
+            console.log(comments);
+        });
+    });
+
 
     let PostForm = useForm({
         _token: $page.props.csrf_token,
@@ -24,6 +35,9 @@
         $PostForm.post(`/social/${social_post.id}/comment`, {
             onSuccess: () => {
                 $PostForm.reset('content');
+                axios.get(`/social/${social_post.id}/comments`).then(response => {
+                    comments = response.data;
+                });
             },
         });
     }
@@ -32,7 +46,6 @@
 <Layout>
     <div class="flex flex-col items-center justify-center mt-10">
         <div class="border border-gray-500 bg-secondary container mx-auto max-w-xl">
-            <a href='/' use:inertia={{ href: '/', preserveState: true, preserveScroll: true }} class="text-white p-2">Go Back</a>
         </div>
             <Post post={social_post} />
     </div>
@@ -57,12 +70,12 @@
         {/if}
     </div>
     <div class="items-center justify-center container max-w-xl mx-auto ">
-        {#if social_post.comments}
+        {#if comments.length > 0}
             <div class="flex flex-col items-center justify-center mt-10 w-full">
                 <div class="border border-gray-500 bg-secondary w-full">
                     <h1 class="text-white text-2xl font-bold text-center">Comments</h1>
                 </div>
-                {#each social_post.comments as comment}
+                {#each comments as comment}
                     <Comment comment={comment} />
                 {/each}
             </div>
