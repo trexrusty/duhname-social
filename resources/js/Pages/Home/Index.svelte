@@ -7,20 +7,29 @@
     import Post from '../Shared/Post.svelte'
     import { likeAuth } from '../../libs/stores/LikeAuth'
     import { usePoll } from '@inertiajs/svelte'
-    import { router } from '@inertiajs/svelte'
+    import { postState } from '../../libs/stores/Poststate'
+    import { onMount } from 'svelte'
+
+    let { posts: initialPosts, last_post_id: initialLastPostId } = $props()
+
     let startpolling = $state(false)
-    let { posts, last_post_id } = $props()
-
-
-    let lastPostId = $state(last_post_id); // Get the last post ID
-
-    console.log(lastPostId)
-
     let like_auth = $state(false);
 
+    let posts = $state([]);
+    let lastPostId = $state();
+
+    onMount(() => {
+        // Initialize store with Inertia props
+        postState.initialize(initialPosts, initialLastPostId);
+    });
+    postState.subscribe((value) => {
+        posts = value.posts;
+        lastPostId = value.lastPostId;
+    });
+
     likeAuth.subscribe(value => {
-           like_auth = value;
-       });
+        like_auth = value;
+    });
 
     const PostForm = useForm({
         _token: $page.props.csrf_token,
@@ -28,27 +37,19 @@
     })
 
     function testing() {
-        console.log('testing')
         axios.get('/post', {
             params: {
                 end_id: lastPostId,
             },
         })
         .then(response => {
-            console.log(response.data)
-            posts = [...posts, ...response.data.data]
-            if(response.data.data.length < 10)
-            {
-                lastPostId = null;
-            }
-            else {
-                lastPostId = response.data.last_post_id;
-            }
-            console.log(lastPostId)
+            const newPosts = response.data.data;
+            const newLastPostId = newPosts.length < 10 ? null : response.data.last_post_id;
+            postState.addPosts(newPosts, newLastPostId);
         })
-        .catch(error => {
-            console.error(error)
-        })
+        .catch((error) => {
+            console.error(error);
+        });
     }
 
     function submit(e) {
@@ -59,6 +60,7 @@
             },
         });
     }
+
 
     $effect(() => {
         if (startpolling) {
@@ -97,10 +99,10 @@
         </div>
         {/if}
     </div>
-    {#if posts}
-            {#each posts as post}
-                <Post post={post} />
-            {/each}
+    {#if posts.length > 0}
+        {#each posts as post}
+            <Post {post} />
+        {/each}
     {:else}
         <p class="text-white text-center">No posts available</p>
     {/if}
@@ -112,7 +114,7 @@
     {:else if lastPostId == null}
         <p class="text-white text-center">No more posts to load</p>
     {/if}
-
+    <p>{JSON.stringify(posts)}</p> <!-- Debug output -->
 
 </Layout>
 

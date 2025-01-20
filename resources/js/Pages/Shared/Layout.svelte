@@ -2,7 +2,17 @@
     import { onMount } from 'svelte';
     import { inertia, Link } from '@inertiajs/svelte'
     import { page } from '@inertiajs/svelte'
+    import { postState } from '../../libs/stores/Poststate'
+    import { router } from '@inertiajs/svelte'
     let { children } = $props()
+
+    router.on('navigate', (event) => {
+        const newPath = event.detail.page.url;
+        // Only clear if not navigating to home or a social post
+        if (!newPath.startsWith('/social/') && newPath !== '/') {
+            postState.clear();
+        }
+    });
 </script>
 
 <svelte:head>

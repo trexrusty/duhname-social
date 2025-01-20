@@ -5,6 +5,7 @@
     import { likeAuth } from '../../libs/stores/LikeAuth'
     import Like from './Form/Like.svelte'
     let { post } = $props()
+    import { router } from '@inertiajs/svelte'
 
     let likes_count = $state(post.likes_count)
     let has_liked = $state(post.has_liked)
@@ -26,9 +27,14 @@
     <div class="text-base text-white break-words whitespace-normal px-4 pb-2 mb-2 pt-2">{post.content}</div>
     <div class="border-b border-gray-500"></div>
     <div class="flex items-center justify-between px-4">
-        <a href={`/social/${post.id}`} use:inertia={{ prefetch: 'click' }} class="text-white justify-start hover:text-blue-500">
-            <p class="text-sm text-white text-center">{post.comments_count ?? 0}</p>
+        <a
+        href={`/social/${post.id}`}
+        use:inertia={{ prefetch: 'hover', preserveState: true, preserveScroll: true }}
+        class="text-white justify-start hover:text-blue-500"
+        >
+        <p class="text-sm text-white text-center">{post.comments_count ?? 0}</p>
         </a>
+
         <div class="flex items-center justify-end pr-4">
             <Like has_liked={has_liked} likes_count={likes_count} post_id={post.id} />
         </div>
