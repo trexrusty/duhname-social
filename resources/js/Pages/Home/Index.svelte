@@ -55,8 +55,12 @@
     function submit(e) {
         e.preventDefault();
         $PostForm.post('/post', {
-            onSuccess: () => {
+            onSuccess: (response) => {
                 $PostForm.reset('content');
+                // Update the posts state with the new data from the response
+                const newPosts = response.props.posts;
+                const newLastPostId = response.props.last_post_id;
+                postState.initialize(newPosts, newLastPostId);
             },
         });
     }

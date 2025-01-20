@@ -9,10 +9,18 @@ use App\Http\Controllers\PostController;
 use App\Http\Controllers\LikeController;
 use App\Http\Controllers\HubsController;
 use App\Http\Controllers\CommentController;
+use App\Http\Controllers\Auth\UserController;
+use App\Http\Controllers\FollowController;
 
 Route::get('/social/{post}', [PostController::class, 'show'])->name('social.show');
 
-Route::get('/social/{post}/comments', [CommentController::class, 'getComments'])->name('social.comments');
+Route::get('/api/social/{post}/comments', [CommentController::class, 'getComments'])->name('social.comments');
+
+Route::get('/social/{post}/{comment}', [CommentController::class, 'showComment'])->name('social.comment');
+
+Route::get('/profile/{user:tag}', [UserController::class, 'show'])->name('user.show');
+
+Route::get('/api/profile/{user:tag}', [UserController::class, 'getUser'])->name('user.get');
 
 Route::group(['middleware' => 'guest'], function () {
     Route::get('/register', [RegisterController::class, 'showRegistrationForm'])->name('register');
@@ -33,6 +41,8 @@ Route::group(['middleware' => 'auth'], function () {
     Route::post('/social/{post}/comment', [CommentController::class, 'store'])->name('comment.store');
 
     Route::get('/hub', [HubsController::class, 'index'])->name('hub.index');
+
+    Route::post('/api/follow/{user}', [FollowController::class, 'follow'])->name('follow');
 });
 
 

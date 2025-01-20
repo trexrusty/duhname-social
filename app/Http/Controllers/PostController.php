@@ -61,7 +61,9 @@ class PostController extends Controller
 
         $post = Post::with([
             'user:id,tag,username',
-        ])->find($post->id);
+        ])
+        ->withCount('comments')
+        ->find($post->id);
 
         $post->has_liked = $user ? $post->likes->contains('user_id', $user->id) : false;
 

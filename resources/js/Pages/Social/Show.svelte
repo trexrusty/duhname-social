@@ -16,11 +16,18 @@
 
     let comments = $state([]);
 
-    onMount(() => {
-        axios.get(`/social/${social_post.id}/comments`).then(response => {
+    async function fetchComments() {
+        try {
+            const response = await axios.get(`/api/social/${social_post.id}/comments`);
             comments = response.data;
-            console.log(comments);
-        });
+        } catch (error) {
+            console.error('Error fetching comments:', error);
+        }
+    }
+
+
+    onMount(() => {
+        fetchComments();
     });
 
 
@@ -35,9 +42,7 @@
         $PostForm.post(`/social/${social_post.id}/comment`, {
             onSuccess: () => {
                 $PostForm.reset('content');
-                axios.get(`/social/${social_post.id}/comments`).then(response => {
-                    comments = response.data;
-                });
+                fetchComments();
             },
         });
     }
