@@ -25,7 +25,7 @@ class UserController extends Controller
 
     public function getUser(User $user)
     {
-        $user = User::select('id', 'tag', 'username')
+        $user = User::select('id', 'tag', 'username', 'following', 'followers')
         ->with([
             'posts' => function($query) {
                 $query->select('id', 'user_id', 'content')

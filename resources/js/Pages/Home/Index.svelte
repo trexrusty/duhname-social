@@ -8,7 +8,8 @@
     import { likeAuth } from '../../libs/stores/LikeAuth'
     import { usePoll } from '@inertiajs/svelte'
     import { postState } from '../../libs/stores/Poststate'
-    import { onMount } from 'svelte'
+    import { onMount, onDestroy } from 'svelte'
+    import { router } from '@inertiajs/svelte'
 
     let { posts: initialPosts, last_post_id: initialLastPostId } = $props()
 
@@ -22,6 +23,7 @@
         // Initialize store with Inertia props
         postState.initialize(initialPosts, initialLastPostId);
     });
+
     postState.subscribe((value) => {
         posts = value.posts;
         lastPostId = value.lastPostId;
@@ -64,25 +66,12 @@
             },
         });
     }
-
-
-    $effect(() => {
-        if (startpolling) {
-            usePoll(5000)
-        }
-    })
-
-    window.addEventListener('load', () => {
-    window.scrollTo(0, 0);
-    });
-
 </script>
 <Layout>
 
-    <div class="flex flex-col items-center justify-center mb-4">
-        <label for="load-more" class="text-white">Live updates</label>
-        <input type="checkbox" id="load-more" class="text-white" bind:checked={startpolling}/>
-    </div>
+    <div class="flex flex-col items-center justify-center mb-4 container max-w-xl mx-auto">
+        <label for="load-more" class="text-white text-center break-words whitespace-normal">Try hitting F5 or refreshing the page to see new posts. If on mobile try swiping down to refresh.</label>
+        <label for="load-more" class="text-white text-center break-words whitespace-normal">Issue on ios is that when going back it some times doesnt take you back to the home page</label>
     <div class="items-center justify-center container max-w-xl mx-auto ">
         {#if $page.props.auth.user}
             <form onsubmit={submit} id="post-form">
