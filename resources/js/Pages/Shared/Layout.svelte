@@ -16,7 +16,7 @@
 </script>
 
 <svelte:head>
-    <title>Inertia Svelte</title>
+    <title>Duhname</title>
 </svelte:head>
 
 <main>

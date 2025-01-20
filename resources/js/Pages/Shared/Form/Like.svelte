@@ -1,6 +1,7 @@
 <script>
     import Heart from '../Icon/Heart.svelte'
     import { likeAuth } from '../../../libs/stores/LikeAuth'
+    import { postState } from '../../../libs/stores/Poststate'
     import axios from 'axios'
     import { page } from '@inertiajs/svelte'
     let { has_liked, likes_count, post_id } = $props()
@@ -14,6 +15,7 @@
         }).then(response => {
             has_liked = response.data.has_liked;
             likes_count = response.data.likes_count;
+            postState.updateLike(post_id, has_liked, likes_count);
         }).catch(error => {
             if (error.response.status === 401) {
                 likeAuth.set(true)

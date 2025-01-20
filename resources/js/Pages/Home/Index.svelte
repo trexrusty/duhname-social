@@ -114,7 +114,6 @@
     {:else if lastPostId == null}
         <p class="text-white text-center">No more posts to load</p>
     {/if}
-    <p>{JSON.stringify(posts)}</p> <!-- Debug output -->
 
 </Layout>
 

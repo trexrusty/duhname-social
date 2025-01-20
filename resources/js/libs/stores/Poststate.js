@@ -28,6 +28,16 @@ const createPostState = () => {
                 lastPostId: newLastPostId
             }));
         },
+        updateLike: (postId, hasLiked, likesCount) => {
+            update(state => ({
+                ...state,
+                posts: state.posts.map(post =>
+                    post.id === postId
+                        ? {...post, has_liked: hasLiked, likes_count: likesCount}
+                        : post
+                )
+            }));
+        },
         clear: () => {
             set({
                 posts: [],

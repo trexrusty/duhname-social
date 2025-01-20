@@ -32,7 +32,7 @@
 <Layout>
     <div class="flex flex-col items-center justify-center mt-10">
         <div class="border border-gray-500 bg-secondary container mx-auto max-w-xl">
-            <a href='/' use:inertia={{ href: '/', preserveState: true }} class="text-white p-2">Home</a>
+            <a href='/' use:inertia={{ href: '/', preserveState: true, preserveScroll: true }} class="text-white p-2">Go Back</a>
         </div>
             <Post post={social_post} />
     </div>
