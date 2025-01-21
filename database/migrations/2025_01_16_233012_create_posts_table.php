@@ -18,6 +18,7 @@ return new class extends Migration
             $table->integer('likes_count')->default(0);
             $table->boolean('is_draft')->default(false);
             $table->boolean('is_private')->default(false);
+            $table->enum('post_type', ['text', 'image', 'video'])->default('text');
             $table->timestamps();
         });
     }
