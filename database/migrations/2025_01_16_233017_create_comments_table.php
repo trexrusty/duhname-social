@@ -15,11 +15,13 @@ return new class extends Migration
             $table->uuid('id')->primary();
             $table->enum('comment_type', ['text', 'image', 'video', 'poll'])->default('text');
             $table->text('content');
+            $table->boolean('cleared')->default(false);
             $table->softDeletes();
             $table->foreignUuid('user_id')->constrained('users');
             $table->foreignUuid('post_id')->constrained('posts');
             $table->foreignUuid('parent_id')->nullable()->constrained('comments');
             $table->integer('likes_count')->default(0);
+            $table->integer('report_count')->default(0);
             $table->timestamps();
         });
     }

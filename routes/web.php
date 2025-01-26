@@ -72,5 +72,6 @@ Route::group(['middleware' => 'can:view reports'], function () {
     Route::post('/admin/undelete/comment/{comment}', [StaffController::class, 'undelete_comment'])->name('admin.undelete.comment');
     Route::post('/admin/ban/user/{user}', [StaffController::class, 'ban_user'])->name('admin.ban.user');
     Route::post('/admin/unban/user/{user}', [StaffController::class, 'unban_user'])->name('admin.unban.user');
+    Route::post('/admin/clear/post/report/{post}', [StaffController::class, 'clear_post_report'])->name('admin.clear.post.report');
 
 });

@@ -19,8 +19,10 @@ return new class extends Migration
             $table->boolean('is_draft')->default(false);
             $table->boolean('is_private')->default(false);
             $table->boolean('report_count_too_much')->default(false);
+            $table->boolean('cleared')->default(false);
             $table->softDeletes();
             $table->enum('post_type', ['text', 'image', 'video', 'poll'])->default('text');
+            $table->integer('report_count')->default(0);
             $table->timestamps();
         });
     }

@@ -13,7 +13,8 @@ class StaffController extends Controller
 {
     public function reports()
     {
-        $reports = Report::with('post', 'comment', 'user')->whereNull('deleted_at')->get();
+
+        $reports = Post::where('report_count', '>', 0)->where('cleared', false)->get()->load('user:id,username,tag');
         return Inertia::render('Admin/Reports', [
             'reports' => $reports,
         ]);
@@ -88,6 +89,20 @@ class StaffController extends Controller
     {
         $report->softDelete();
         return response()->json(['message' => 'Report deleted']);
+    }
+
+    public function clear_post_report(Post $post)
+    {
+        $post->cleared = true;
+        $post->save();
+        return response()->json(['message' => 'Post report cleared']);
+    }
+
+    public function clear_comment_report(Comment $comment)
+    {
+        $comment->cleared = true;
+        $comment->save();
+        return response()->json(['message' => 'Comment report cleared']);
     }
 
     public function users()

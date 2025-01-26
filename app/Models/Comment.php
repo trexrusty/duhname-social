@@ -100,4 +100,9 @@ class Comment extends Model
         $this->deleted_at = now();
         $this->save();
     }
+
+    public function reportcount()
+    {
+        return $this->reports()->count();
+    }
 }

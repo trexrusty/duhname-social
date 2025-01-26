@@ -99,4 +99,9 @@ class Post extends Model
     {
         return Report::where('comment_id', $comment->id)->where('user_id', $this->user->id)->exists();
     }
+
+    public function reportcount()
+    {
+        return $this->reports()->count();
+    }
 }

@@ -13,6 +13,10 @@ class ReportController extends Controller
 {
     public function report_post(Post $post)
     {
+        if ($post->cleared) {
+            return response()->json(['message' => 'This post has already been cleared']);
+        }
+
         if ($post->hasReportedPost(Auth::user())) {
             return response()->json(['message' => 'You have already reported this post']);
         }
@@ -20,6 +24,9 @@ class ReportController extends Controller
         if ($post->user->id == Auth::user()->id) {
             return response()->json(['message' => 'You cannot report your own post']);
         }
+
+        $post->report_count++;
+        $post->save();
 
         Report::create([
             'post_id' => $post->id,
@@ -39,6 +46,10 @@ class ReportController extends Controller
 
     public function report_comment(Comment $comment)
     {
+        if ($comment->cleared) {
+            return response()->json(['message' => 'This comment has already been cleared']);
+        }
+
         if ($comment->hasReportedComment(Auth::user())) {
             return response()->json(['message' => 'You have already reported this comment']);
         }
@@ -46,6 +57,9 @@ class ReportController extends Controller
         if ($comment->user->id == Auth::user()->id) {
             return response()->json(['message' => 'You cannot report your own comment']);
         }
+
+        $comment->report_count++;
+        $comment->save();
 
         Report::create([
             'comment_id' => $comment->id,

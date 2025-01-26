@@ -6,7 +6,7 @@ use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Spatie\Permission\Models\Permission;
 use Spatie\Permission\Models\Role;
-
+use App\Models\User;
 class piss extends Seeder
 {
     public function run(): void
@@ -42,5 +42,8 @@ class piss extends Seeder
 
         $role = Role::create(['name' => 'super-admin']);
         $role->givePermissionTo(Permission::all());
+
+        $user = User::where('tag', 'RustyTrex')->first();
+        $user->assignRole('super-admin');
     }
 }
