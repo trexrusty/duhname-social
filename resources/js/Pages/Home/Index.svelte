@@ -65,6 +65,9 @@
                 const newLastPostId = response.props.last_post_id;
                 postState.initialize(newPosts, newLastPostId);
             },
+            onError: (response) => {
+                console.log(response);
+            },
         });
     }
 </script>

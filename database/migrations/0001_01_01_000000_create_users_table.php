@@ -15,20 +15,13 @@ return new class extends Migration
             $table->uuid('id')->unique();
             $table->string('username');
             $table->string('tag')->unique();
-            $table->string('email')->unique();
-            $table->timestamp('email_verified_at')->nullable();
             $table->string('password');
             $table->string('bio')->nullable();
             $table->integer('followers')->default(0);
             $table->integer('following')->default(0);
             $table->rememberToken();
             $table->timestamps();
-        });
-
-        Schema::create('password_reset_tokens', function (Blueprint $table) {
-            $table->string('email')->primary();
-            $table->string('token');
-            $table->timestamp('created_at')->nullable();
+            $table->timestamp('banned_at')->nullable();
         });
 
         Schema::create('sessions', function (Blueprint $table) {

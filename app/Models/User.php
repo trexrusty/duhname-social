@@ -8,11 +8,11 @@ use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Foundation\Auth\User as Authenticatable;
 use Illuminate\Notifications\Notifiable;
-
+use Spatie\Permission\Traits\HasRoles;
 class User extends Authenticatable
 {
     /** @use HasFactory<\Database\Factories\UserFactory> */
-    use HasFactory, Notifiable, HasUuids;
+    use HasFactory, Notifiable, HasUuids, HasRoles;
 
     /**
      * The attributes that are mass assignable.
@@ -89,4 +89,20 @@ class User extends Authenticatable
         return $this->follows()->where('following_id', $user->id)->exists();
     }
 
+    public function ban()
+    {
+        $this->banned_at = now();
+        $this->save();
+    }
+
+    public function unban()
+    {
+        $this->banned_at = null;
+        $this->save();
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
 }

@@ -38,22 +38,33 @@
 </script>
 <Layout>
     {#if user}
-    <div>
-        <h1>{user.username}</h1>
-        <h1>{user.id}</h1>
-        <h1>{following_count}</h1>
-        <h1>{followers_count}</h1>
-        {#if user.id !== $page.props.auth.user.id}
-                <button onclick={() => follow(user)}>
-                {is_following ? 'Unfollow' : 'Follow'}
+    <div class="profile-container">
+        <div class="profile-header">
+            <h1 class="username">{user.username}</h1>
+            <h2 class="user-id">User ID: {user.id}</h2>
+        </div>
+        <div class="profile-stats">
+            <div class="stat">
+                <h3>Following: <span class="stat-count">{following_count}</span></h3>
+            </div>
+            <div class="stat">
+                <h3>Followers: <span class="stat-count">{followers_count}</span></h3>
+            </div>
+        </div>
+        <div class="profile-actions">
+            {#if user.id !== $page.props.auth.user.id}
+                <button class="follow-button" onclick={() => follow(user)}>
+                    {is_following ? 'Unfollow' : 'Follow'}
                 </button>
-        {:else}
-                <a href={`/edit-profile`}>Edit Profile</a>
-        {/if}
-        <button onclick={fetchUser}>Fetch User</button>
-
+            {:else}
+                <a class="edit-profile-link" href={`/edit-profile`}>Edit Profile</a>
+            {/if}
+        </div>
+        <button class="fetch-user-button" onclick={fetchUser}>Refresh Profile</button>
     </div>
     {:else}
-    <p>Loading...</p>
+    <div class="loading-container">
+        <p>Loading...</p>
+    </div>
     {/if}
 </Layout>

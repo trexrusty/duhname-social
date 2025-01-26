@@ -22,12 +22,16 @@ class RegisterController extends Controller
     {
         $validated = $request->validated();
 
+        if (User::where('tag', $validated['tag'])->exists()) {
+            return back()->withErrors(['tag' => 'Tag already exists']);
+        }
+
+
         $iconUrl = $this->generateDicebearIcon($validated['username']);
 
         $user = User::create([
             'username' => $validated['username'],
             'tag' => $validated['tag'],
-            'email' => $validated['email'],
             'password' => Hash::make($validated['password']),
         ]);
 

@@ -8,7 +8,7 @@
 
     const form = useForm({
         _token: $page.props.csrf_token,
-        email: '',
+        tag: '',
         password: '',
     })
 
@@ -24,13 +24,15 @@
 </script>
 
 <Layout>
-    <h1 class="text-2xl font-bold">Login</h1>
-    <form onsubmit={submit}>
-        {#if $form.errors.email}
-            <p class="text-red-500">{$form.errors.email}</p>
-        {/if}
-        <Input id="email" name="email" bind:value={$form.email} />
-        <Input id="password" name="password" bind:value={$form.password} />
-        <button type="submit" class="px-4 py-2 mt-2 bg-secondary text-white rounded hover:bg-tertiary mb-2">Login</button>
-    </form>
+    <div class="flex flex-col items-center justify-center mt-10">
+        <h1 class="text-2xl font-bold text-center mb-10">Login</h1>
+        <form onsubmit={submit} class="flex flex-col gap-2 max-w-md">
+        {#if $form.errors.tag}
+            <p class="text-red-500">{$form.errors.tag}</p>
+            {/if}
+            <Input type="text" id="tag" name="tag" placeholder="Tag" bind:value={$form.tag} />
+            <Input type="password" id="password" name="password" placeholder="Password" bind:value={$form.password} />
+            <button type="submit" class="px-4 py-2 mt-2 bg-secondary text-white rounded hover:bg-tertiary mb-2">Login</button>
+            </form>
+    </div>
 </Layout>

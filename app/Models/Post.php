@@ -24,7 +24,7 @@ class Post extends Model
 
     public function comments()
     {
-        return $this->hasMany(Comment::class);
+        return $this->hasMany(Comment::class)->whereNull('deleted_at');
     }
 
     public function likes()
@@ -32,9 +32,9 @@ class Post extends Model
         return $this->hasMany(Like::class);
     }
 
-    public function tags()
+    public function reports()
     {
-        return $this->belongsToMany(Tag::class);
+        return $this->hasMany(Report::class);
     }
 
     public function scopePublic($query)
@@ -54,12 +54,12 @@ class Post extends Model
 
     public function scopePublished($query)
     {
-        return $query->where('is_draft', false)->where('is_private', false);
+        return $query->where('is_draft', false)->where('is_private', false)->where('report_count_too_much', false)->whereNull('deleted_at');
     }
 
     public function publicPosts()
     {
-        return $this->where('is_draft', false)->where('is_private', false);
+        return $this->where('is_draft', false)->where('is_private', false)->where('report_count_too_much', false);
     }
 
     public function likePost()
@@ -90,4 +90,13 @@ class Post extends Model
         }
     }
 
+    public function hasReportedPost(User $user)
+    {
+        return Report::where('post_id', $this->id)->where('user_id', $user->id)->exists();
+    }
+
+    public function hasReportedComment(Comment $comment)
+    {
+        return Report::where('comment_id', $comment->id)->where('user_id', $this->user->id)->exists();
+    }
 }

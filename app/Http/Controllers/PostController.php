@@ -58,7 +58,9 @@ class PostController extends Controller
     public function show(Post $post)
     {
         $user = Auth::user();
-
+        if ($post->deleted_at) {
+            return to_route('home');
+        }
         $post = Post::with([
             'user:id,tag,username',
         ])

@@ -11,8 +11,17 @@
     let likes_count = $state(comment.likes_count)
     let has_liked = $state(comment.has_liked)
 
+    let has_reported = $state(false)
 
-
+    function reportComment() {
+        axios.post(`/api/report/comment/${comment.id}`)
+        .then(response => {
+            has_reported = true
+        })
+        .catch(error => {
+            console.error('Error reporting comment:', error)
+        })
+    }
 </script>
 
 <div class="border border-gray-500 container mx-auto max-w-xl bg-secondary shadow-md text-white">
@@ -23,6 +32,14 @@
                 <h1 class="text-sm text-white">{comment.user?.username ?? 'Unknown User'}</h1>
                 <a use:inertia={{ href: '/profile/' + comment.user?.tag, preserveState: true }} href={`/profile/${comment.user?.tag}`} class="text-xs text-white hover:text-gray-400 hover:underline">duh:{comment.user?.tag ?? 'Unknown User'}</a>
             </div>
+        </div>
+        <div class="flex items-center justify-end">
+            {#if has_reported === false}
+                <button onclick={reportComment} class="flex text-xs text-white hover:text-gray-400 hover:underline justify-end">Report</button>
+            {/if}
+            {#if has_reported}
+                <p class="text-xs text-white">Reported</p>
+            {/if}
         </div>
     </div>
     <div class="text-base text-white break-words whitespace-normal px-4 pb-2 mb-2 pt-2">{comment.content}</div>

@@ -13,8 +13,9 @@ return new class extends Migration
     {
         Schema::create('comments', function (Blueprint $table) {
             $table->uuid('id')->primary();
-            $table->integer('comment_type')->unique();
+            $table->enum('comment_type', ['text', 'image', 'video', 'poll'])->default('text');
             $table->text('content');
+            $table->softDeletes();
             $table->foreignUuid('user_id')->constrained('users');
             $table->foreignUuid('post_id')->constrained('posts');
             $table->foreignUuid('parent_id')->nullable()->constrained('comments');

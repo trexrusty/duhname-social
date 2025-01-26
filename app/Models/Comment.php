@@ -84,4 +84,20 @@ class Comment extends Model
             return true;
         }
     }
+
+    public function hasReportedComment(User $user)
+    {
+        return Report::where('comment_id', $this->id)->where('user_id', $user->id)->exists();
+    }
+
+    public function reports()
+    {
+        return $this->hasMany(Report::class);
+    }
+
+    public function softDelete()
+    {
+        $this->deleted_at = now();
+        $this->save();
+    }
 }
